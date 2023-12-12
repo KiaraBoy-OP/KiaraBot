@@ -15,7 +15,7 @@ _library () {
     then 
         python3 -m PyrogramKiara
     else
-        python3 -m TelethonKiara
+        python3 -m KiaraUserBot
     fi
 }
 
@@ -23,11 +23,12 @@ _starter () {
     local kiarapath
     kiarapath="Plugins.zip"
     echo "••• DOWNLOADING KIARABOT •••"
-    wget -q $(_hell_zip) -O "$kiarapath"
-    KIARAPATH=$(zipinfo -1 "$kiarapath" | grep -v "/.");
+    mkdir -p downloads  # Create a directory for downloads
+    wget -q $(_kiara_zip) -O "downloads/$kiarapath"
+    cd downloads  # Change to the downloads directory
     unzip -qq "$kiarapath"
     rm -rf "$kiarapath"
-    cd $KIARAPATH
+    cd $(ls -d */) || exit 1  # Change to the extracted directory
     python3 ../updater.py ../requirements.txt requirements.txt
     echo "••• STARTING KIARABOT •••"
     _library
